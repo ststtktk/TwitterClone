@@ -122,10 +122,11 @@ function convertTodayTimeAgo(string $datetime)//stringで型を指定してお�
 </head>
 
 <body class="home">
-    <div class="container">
+    <div class="container"><!-- containerクラスは、レスポンシブウェブデザインが適用される -->
         <div class="side">
             <div class="side-inner">
-                <ul class="nav flex-column">
+                <ul class="nav flex-column"><!-- flex-columnクラスは子要素を上から下に並べる -->
+                <!-- navクラスはメニュー項目に適したレイアウトが適用される -->
                     <li class="nav-item"><a href="home.php" class="nav-link"><img src="<?php echo HOME_URL;?>Views/img/logo-twitterblue.svg" alt="サイトロゴ画像" class="icon"></a></li>
                     <li class="nav-item"><a href="home.php" class="nav-link"><img src="<?php echo HOME_URL;?>Views/img/icon-home.svg" alt=""></a></li>
                     <li class="nav-item"><a href="search.php" class="nav-link"><img src="<?php echo HOME_URL;?>Views/img/icon-search.svg" alt=""></a></li>
