@@ -41,20 +41,20 @@ $view_tweets = [//つぶやき一覧の内容を動的にするために、php�
 /**
  * 画像ファイル名から画像のURLを生成する
  * 
- * @param string $name 画像ファイル
- * @param string $type user | tweet
- * @return string
+ * @param string $name 第一引数には画像ファイル名が入ってくる想定
+ * @param string $type user | tweet 第二引数にはユーザーアイコンの画像なのかつぶやき投稿の画像なのかを識別するタイプが入る想定
+ * @return string 戻り値はURLを返すので、ストリングになる
  * 
  */
 
 function buildImagePath(string $name = null,string $type)
-{
-    if($type === 'user' && !isset($name)){
+{/* $nameに値が渡されなかったら、nullを返す*/
+    if($type === 'user' && !isset($name)){/*タイプがユーザーでファイルが存在しない場合*/
         return HOME_URL . 'Views/img/icon-default-user.svg';
     }
 
     return HOME_URL . 'Views/img_uploaded/' .$type. '/' . htmlspecialchars($name);
-    /*htmlspecialchars関数は、phpでエスケープ処理するための関数*/
+    /*ファイル名はhtmlspecialchairsでエスケープしておく。htmlspecialchars関数は、phpでエスケープ処理するための関数*/
 
 }
 
@@ -63,8 +63,8 @@ function buildImagePath(string $name = null,string $type)
 /** 
  *　指定した日時からどれだけ経過したかを取得
 
- * @param string $datetime 日時 //引数の情報
- * @return string　　　　　　　　 //戻り値の情報
+ * @param string $datetime 日時 //パラムタグは、引数の情報
+ * @return string　　　　　　　　 //リターンタグは、戻り値の情報
 */
 function convertTodayTimeAgo(string $datetime)//stringで型を指定しておくと、指定した型以外が入るとエラーを表示
 {
@@ -181,7 +181,7 @@ function convertTodayTimeAgo(string $datetime)//stringで型を指定してお�
 
             <!--つぶやき一覧エリア-->
             <?php if(empty($view_tweets)): ?><!--エンプティー関数は第１引数の値が空だった場合　trueを返す-->
-                <p class="p-3">ツイートがありません</p><!--classのp-3は全方向に１レムの余白を開ける。bootstrapのクラす-->
+                <p class="p-3">ツイートがありません</p><!--classのp-3はpaddingのことで、全方向に１レムの余白を開ける。bootstrapのクラす-->
             <?php else: ?>
                 <div class="tweet-list">
                 <?php foreach($view_tweets as $view_tweet): ?>
@@ -207,7 +207,7 @@ function convertTodayTimeAgo(string $datetime)//stringで型を指定してお�
                             <div class="icon-list">
                                 <div class="like js-like" data-like-id="<?php echo htmlspecialchars($view_tweet['like_id']); ?>">
                                     <?php
-                                    if(isset($view_tweet['like_id'])){
+                                    if(isset($view_tweet['like_id'])){//isset関数は変数に値がセットされているかを確認
                                         //いいねしている場合、青のハート
                                         echo '<img src="'.HOME_URL.'Views/img/icon-heart-twitterblue.svg" alt="">';
                                     }else{
@@ -227,7 +227,9 @@ function convertTodayTimeAgo(string $datetime)//stringで型を指定してお�
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            /* DOMContentLoadedイベントは、DOMの読み込み(htmlの読み込み)が完了してからfunctionが実行されるもの */
+            /* DOMContentLoadedイベントは、DOMの読み込み(htmlの読み込み)が完了してからfunctionが実行されるもの
+               popoverを有効にするにはJavaScirptに埋め込んでおく必要がある
+            */
             $('.js-popover').popover();
         }, false);
     </script>
