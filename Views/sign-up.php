@@ -1,15 +1,12 @@
-<?php
-include_once('../config.php');
-include_once('../util.php');
-?>
-
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <?php include_once('../Views/common/head.php');?>
     <title>会員登録画面 / Twitterクローン</title>
     <meta name="description" content="会員登録画面です">
 </head>
+
 <body class="signup text-center"><!--text-centerは中央よせ-->
     <main class="form-signup">
         <form action="sign-up.php" method="post">
