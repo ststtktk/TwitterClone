@@ -1,6 +1,14 @@
+<!--矢印のように見える「->」は、アロー演算子（オブジェクト演算子）と呼ばれています。
+PHPのアロー演算子は、主にクラスから生成されたインスタンスで、
+プロパティやメソッドにアクセスする場合に用いられます。
+
+クラスを設計したり、さまざまなオブジェクトを作成・操作したりといったように、
+オブジェクト指向なプログラミングをすうえで、アロー演算子はごく基本的な要素です。
+-->
+
 <?php
 
-////ユーザーデーを処理
+////ユーザーデータを処理
 
 /**
  * ユーザーを作成
@@ -49,4 +57,65 @@ function createUser(array $data)
 
     return $response;
 
+}
+
+/**
+ * ユーザー情報取得：ログインチェック
+ * 
+ * @param string $email
+ * @param string $password
+ * @return array|false
+ * 戻り値がarrayかfalseになる
+ */
+function findUserAndCheakPassword(string $email, string $password)
+{
+    //DB接続
+    $mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
+
+    //接続エラーがある場合->処理停止
+    if($mysqli->connect_errno){
+        echo 'MySQLの接続に失敗しました。:' . $mysqli->connect_error . "\n";
+        exit;
+    }
+
+    //入力値のエスケープ。real_escape_string関数でemail関数にsqlが入っていても実行されないようにする
+    $email = $mysqli->real_escape_string($email);
+
+    //SQLクエリを作成
+    // - 外部からのリクエストは何が入ってくるのかわからないので、必ず、エスケープしたもの(今回だと$email)をクオートで囲む
+    //メールアドレスで条件を絞ってセレクトする
+    $query = 'SELECT * FROM users WHERE email = "' . $email . '"';
+
+    //クエリ実行
+    $result = $mysqli->query($query);
+
+    //クエリ実行に失敗した場合->return
+    //queryメソッドの結果がfalseの場合、エラーを表示
+    if(!$result){
+        //MySQL処理中にエラー発生
+        echo 'エラーメッセージ:' . $mysqli->error . "\n";
+        $mysqli->close();
+        return false;
+    }
+
+    //ユーザー情報を取得
+    //fetch_arrayメソッドはレコードを一件取得
+    $user = $result->fetch_array(MYSQLI_ASSOC);
+    //ユーザーが存在しない場合 ->return
+    if(!$user){
+        $mysqli->close();
+        return false;
+    }
+
+    //パスワードチェック、不一致の場合->return
+    //password_verify関数で入力されたパスワードとデータベースに保存されてあったパスワードの#値を比較して一致するかどうかをチェック
+    if(!password_verify($password,$user['password'])){
+        $mysqli->close();
+        return false;
+    }
+
+    //DB接続を解放
+    $mysqli->close();
+
+    return $user;
 }

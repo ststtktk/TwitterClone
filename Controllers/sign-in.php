@@ -12,16 +12,17 @@ include_once '../Models/users.php';
 $try_login_result = null;
 
 //メールアドレスとパスワードが入力されている場合
-if(isset($_POST['email'])&& isset($_POST['password'])){
+if(isset($_POST['email']) && isset($_POST['password'])) {
     //ログインチェック実行
-    $user = [];
+    $user = findUserAndCheakPassword($_POST['email'],$_POST['password']);
 
     //ログインに成功した場合
     if($user){
         //ユーザー情報をセッションに保存
+        saveUserSession($user);
 
         //ホーム画面に移動
-        header('Location:' .HOME_URL. 'Controllers/home.php');
+        header('Location:' . HOME_URL . 'Controllers/home.php');
         exit;
     }else{
         //ログイン結果を失敗にする

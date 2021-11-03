@@ -60,4 +60,67 @@ function convertTodayTimeAgo(string $datetime)//stringで型を指定してお�
 
     return (int)$time . $unit;//intは型キャストと言って、型を変換する処理。　
 }
-?>
+
+/**
+ * ユーザー情報をセッションに保存
+ *
+ * @param array $user
+ * @return void
+ */
+function saveUserSession(array $user)
+{
+    //セッションを開始していない場合 session_statusで現在のセッションの状態をチェックする
+    //PHP_SESSION_NONEは、セッションが有効だけれどもセッションが存在しない場合の session_status() の戻り値。
+    if (session_status() === PHP_SESSION_NONE) {
+        // セッション開始
+        session_start();
+    }
+    //引数のuser変数をSESSIONのUSERというキーのところに格納
+    $_SESSION['USER'] = $user;
+}
+ 
+/**
+ * ユーザー情報をセッションから削除
+ *
+ * @return void
+ */
+function deleteUserSession()
+{
+    // セッションを開始していない場合
+    if (session_status() === PHP_SESSION_NONE) {
+        // セッション開始
+        session_start();
+    }
+ 
+    //unset関数で、セッションのユーザー情報を削除
+    unset($_SESSION['USER']);
+}
+
+ /** 
+ * セッションのユーザー情報を取得
+ * 
+ * @return array|false
+ */
+function getUserSession()
+{
+    // セッションを開始していない場合
+    if (session_status() === PHP_SESSION_NONE) {
+        // セッション開始
+        session_start();
+    }
+ 
+    if (!isset($_SESSION['USER'])) {
+        // セッションにユーザー情報がない
+        return false;
+    }
+ 
+    $user = $_SESSION['USER'];
+ 
+    // 画像のファイル名からファイルのURLを取得
+    if (!isset($user['image_name'])) {
+        $user['image_name'] = null;
+    }
+    $user['image_path'] = buildImagePath($user['image_name'], 'user');
+ 
+    return $user;
+}

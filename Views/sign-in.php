@@ -8,15 +8,15 @@
 
 <body class="signup text-center"><!--text-centerは中央よせ-->
     <main class="form-signup">
-        <form action="sign-up.php" method="post">
+        <form action="sign-in.php" method="post">
             <img src="<?php echo HOME_URL;?>Views/img/logo-white.svg" alt="" class="logo-white">
             <h1>Twitterクローンにログイン</h1>
 
-            <?php if(isset($view_try_login_result)&& $view_try_login_result === false): ?>
+            <?php if (isset($view_try_login_result) && $view_try_login_result === false):?>
                 <div class="alert alert-warning text-sm" role="alert">
                     ログインに失敗しました。メールアドレス、パスワードが正しいかご確認ください。
                 </div>
-            <?php endif;?>
+            <?php endif; ?>
 
             <!--form controlはモダンなデザインになる。maxlengthで入力可能な文字数を指定。requiredで入力必須項目にする。autofacusで最初からこの項目を選択。-->
             <input type="email" class="form-control" name="email" placeholder="メールアドレス" maxlength="254" required　autofocus>

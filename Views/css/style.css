@@ -1,6 +1,11 @@
 /*
-å…¨ä½“
+全体
 ****/
+
+html {
+    height: 100%;
+}
+
 .container {
     display: flex;
     justify-content: center;
@@ -63,8 +68,12 @@ a {
     text-decoration: none;
 }
 
+.text-sm {
+    font-size: 0.7em;
+}
+
 /*
-ã‚µã‚¤ãƒ‰
+サイド
 ****/
 .side .side-inner {
     position: sticky;
@@ -119,7 +128,7 @@ a {
 }
 
 /*
-ãƒ¡ã‚¤ãƒ³
+メイン
 ****/
 .main .main-header {
     padding: 20px;
@@ -134,7 +143,7 @@ a {
 }
 
 /*
-ãƒ›ãƒ¼ãƒ 
+ホーム
 ****/
 .home .tweet-post {
     display: flex;
@@ -264,10 +273,7 @@ a {
     }
 }
 
-/*ä¼šå“¡ç™»éŒ²(ãƒ­ã‚°ã‚¤ãƒ³ç”»é¢å…±ç”¨)*/
-html {
-    height: 100%;
-}
+/*会員登録画面（ログイン）*/
 
 body.signup {
     display: flex;
@@ -312,7 +318,7 @@ body.signup {
     color: white;
 }
 
-/*ãƒ¦ãƒ¼ã‚¶ãƒ¼*/
+/*ユーザー*/
 .profile .profile-area {
     padding: 25px;
 }
