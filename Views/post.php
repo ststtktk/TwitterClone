@@ -1,11 +1,6 @@
-<?php
-include_once('../config.php');
-include_once('../util.php');
-
-?>
-
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <?php include_once('../Views/common/head.php');?>
     <title>つぶやく画面 / Twitterクローン</title>
@@ -26,7 +21,7 @@ include_once('../util.php');
             <!-- つぶやき投稿エリア -->
             <div class="tweet-post">
                 <div class="my-icon">
-                    <img src="<?php echo HOME_URL;?>Views/img_uploaded/user/sample-person.jpg" alt="">
+                    <img src="<?php echo htmlspecialchars($view_user['image_path'])?>" alt="">
                 </div>
                 <div class="input-area">
                     <form action="post.php" method="post" enctype="multipart/form-data">
