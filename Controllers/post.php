@@ -11,7 +11,7 @@ include_once '../Models/tweets.php';
 
 
 //ログインチェック
-$user = getUserSession();
+$user = getUserSession();//util.phpより用いる
 if(!$user){//変数userに値がなければログインしていない事になる
     //ログインしていない
     //header関数はブラウザに命令ができる。Locationという命令は、下記にかいたURLに遷移させるという内容

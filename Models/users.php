@@ -44,6 +44,7 @@ function createUser(array $data)
     $statement->bind_param('ssss',$data['email'],$data['name'],$data['nickname'],$data['password']);
 
     //クエリを実行 
+    //executeメソッドでクエリを返す。この関数はtrueかfalseを返す。
     $response = $statement->execute();
 
     //実行に失敗した場合 ->エラー表示

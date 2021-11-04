@@ -104,6 +104,8 @@ function deleteUserSession()
 function getUserSession()
 {
     // セッションを開始していない場合
+    //PHP_SESSION_NONEは、セッションが有効だけれどもセッションが存在しない場合の session_status() の戻り値。
+
     if (session_status() === PHP_SESSION_NONE) {
         // セッション開始
         session_start();
@@ -117,7 +119,7 @@ function getUserSession()
     $user = $_SESSION['USER'];
  
     // 画像のファイル名からファイルのURLを取得
-    if (!isset($user['image_name'])) {
+    if (!isset($user['image_name'])) {//画像がセットされていなければ
         $user['image_name'] = null;
     }
     $user['image_path'] = buildImagePath($user['image_name'], 'user');
