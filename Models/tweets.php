@@ -19,13 +19,13 @@ function createTweet(array $data)
     //接続エラーがある場合->処理停止
     // インスタンスのプロパティやメソッドにアクセスするには、アロー演算子と呼ばれれる -> を使います。
     if($mysqli->connect_errno){
-        echo 'MySQLの接続に失敗しました。:' . $mysqli->connect_error. "\n";
+        echo 'MySQLの接続に失敗しました。:' . $mysqli->connect_error . "\n";
         exit;
     }
 
     //新規登録のSQLクエリを作成
     //user_id=ユーザーid、body=メッセージ、image_name=画像のファイル名をセット
-    $query = 'INSERT INTO tweets (user_id, body, image_name) VALUES(?,?,?)';
+    $query = 'INSERT INTO tweets(user_id,body,image_name) VALUES(?,?,?)';
 
     //プリペアドステートメントにクエリを登録。(prepareでクエリの実行準備)
     $statement = $mysqli->prepare($query);
@@ -54,10 +54,11 @@ function createTweet(array $data)
  * ツイート一覧取得
  * 
  * @param array $user ログインしているユーザー情報
+ * @param string $keyword 検索キーワード
  * @return array|false 戻り値はarrayかfalse
  */
 
-function findTweets(array $user)
+function findTweets(array $user,$keyword = null)//キーワード検索をしない場合もあるため、nullを設定  
 {   
     //DB接続
     $mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
@@ -109,8 +110,24 @@ function findTweets(array $user)
             T.status = 'active'
     SQL;
 
+    // 検索キーワードが入力されていた場合
+    if (isset($keyword)) {
+        // エスケープ
+        $keyword = $mysqli->real_escape_string($keyword);
+        // ツイート主のニックネーム・ユーザー名・本文から部分一致検索
+        //query関数に追記する感じで記入
+        //$queryのCONCAT関数は、複数の文字またはカラムを連結することができる
+        $query .= ' AND CONCAT(U.nickname, U.name, T.body) LIKE "%' . $keyword . '%"';
+    }
+ 
+    // 新しい順に並び替え
+    $query .= ' ORDER BY T.created_at DESC';
+    // 表示件数50件
+    $query .= ' LIMIT 50';
+
     //クエリ実行
-    if($result = $mysqli->query($query)){
+    $result = $mysqli->query($query);
+    if($result){
         //データを配列で受け取る
         //fetch_allメソッドは全てのレコードを取得するメソッド
         $response = $result->fetch_all(MYSQLI_ASSOC);
@@ -124,3 +141,4 @@ function findTweets(array $user)
     return $response;
 
 }
+
