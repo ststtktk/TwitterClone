@@ -18,7 +18,7 @@
         <?php endif;?>
 
         <div class="icon-list">
-            <div class="like js-like" data-like-id="<?php echo htmlspecialchars($view_tweet['like_id']); ?>">
+            <div class="like js-like" data-tweet-id="<?php echo htmlspecialchars($view_tweet['tweet_id']); ?>" data-like-id="<?php echo htmlspecialchars($view_tweet['like_id']); ?>">
                 <?php
                 if(isset($view_tweet['like_id'])){//isset関数は変数に値がセットされているかを確認
                     //いいねしている場合、青のハート

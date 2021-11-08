@@ -18,7 +18,7 @@ PHPのアロー演算子は、主にクラスから生成されたインスタ�
  */
 function createUser(array $data)
 {
-    //DB接続  mysqli関数でデータベストを接続する。$mysqliに接続結果のオブジェクトが入ってくる。
+    //DB接続  mysqli関数でデータベースと接続する。$mysqliに接続結果のオブジェクトが入ってくる。
     $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
     //エラーがある場合　ー>処理停止  接続エラーがあった場合、connect_errno(コネクトエラーナンバー)にint型で数字が入ってくる。

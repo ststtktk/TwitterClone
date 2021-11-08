@@ -15,7 +15,9 @@ function createTweet(array $data)
 {
     //DB接続
     $mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
+    
     //接続エラーがある場合->処理停止
+    // インスタンスのプロパティやメソッドにアクセスするには、アロー演算子と呼ばれれる -> を使います。
     if($mysqli->connect_errno){
         echo 'MySQLの接続に失敗しました。:' . $mysqli->connect_error. "\n";
         exit;
@@ -25,7 +27,7 @@ function createTweet(array $data)
     //user_id=ユーザーid、body=メッセージ、image_name=画像のファイル名をセット
     $query = 'INSERT INTO tweets (user_id, body, image_name) VALUES(?,?,?)';
 
-    //プリペアドステートメントにクエリを登録
+    //プリペアドステートメントにクエリを登録。(prepareでクエリの実行準備)
     $statement = $mysqli->prepare($query);
 
     //プレースホルダーにカラム値を紐付け(i=int,s=string)
