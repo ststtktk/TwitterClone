@@ -52,13 +52,14 @@ function createTweet(array $data)
 
 /**
  * ツイート一覧取得
- * 
+ * 引数設定
  * @param array $user ログインしているユーザー情報
  * @param string $keyword 検索キーワード
+ * @param array $user_ids ユーザーID一覧
  * @return array|false 戻り値はarrayかfalse
  */
 
-function findTweets(array $user,$keyword = null)//キーワード検索をしない場合もあるため、nullを設定  
+function findTweets(array $user,$keyword = null,array $user_ids = null )//キーワード検索をしない場合もあるため、nullを設定  
 {   
     //DB接続
     $mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
@@ -73,7 +74,7 @@ function findTweets(array $user,$keyword = null)//キーワード検索をしな
 
     //検索のSQLクエリを作成。SQLが長いため、ヒアドキュメントで記述
     $query = <<<SQL
-        SELECT
+        SELECT 
             -- カラム名(例:T.id)に別名(例:tweet_id)を当てる
             T.id AS tweet_id,
             T.status AS tweet_status,
@@ -115,9 +116,22 @@ function findTweets(array $user,$keyword = null)//キーワード検索をしな
         // エスケープ
         $keyword = $mysqli->real_escape_string($keyword);
         // ツイート主のニックネーム・ユーザー名・本文から部分一致検索
-        //query関数に追記する感じで記入
+        //query変数に追記する感じで記入
         //$queryのCONCAT関数は、複数の文字またはカラムを連結することができる
         $query .= ' AND CONCAT(U.nickname, U.name, T.body) LIKE "%' . $keyword . '%"';
+    }
+
+    // ユーザーIDが指定されている場合
+    // $user_idsは、複数のユーザーidが配列で入っているからforeachを使い、一つずつ取り出す
+    if (isset($user_ids)) {
+        foreach ($user_ids as $key => $user_id) {
+            $user_ids[$key] = $mysqli->real_escape_string($user_id);
+        }
+        // エスケープ済みのuser_id変数をダブルコーテーションを含むカンマ区切りで連結させて一つの文字列にする
+        // joinメソッドとは、指定された配列内の要素を文字列として連結するためのメソッド
+        $user_ids_csv = '"' . join('","', $user_ids) . '"';
+        // INでユーザーID一覧に含まれるユーザーで絞る
+        $query .= ' AND T.user_id IN (' . $user_ids_csv . ')';
     }
  
     // 新しい順に並び替え
@@ -125,7 +139,7 @@ function findTweets(array $user,$keyword = null)//キーワード検索をしな
     // 表示件数50件
     $query .= ' LIMIT 50';
 
-    //クエリ実行
+    // クエリ実行
     $result = $mysqli->query($query);
     if($result){
         //データを配列で受け取る
@@ -139,6 +153,5 @@ function findTweets(array $user,$keyword = null)//キーワード検索をしな
     $mysqli->close();
 
     return $response;
-
 }
 

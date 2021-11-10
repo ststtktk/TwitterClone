@@ -61,6 +61,74 @@ function createUser(array $data)
 }
 
 /**
+ * ユーザーを更新
+ * 
+ * @param array $data
+ * @return bool
+ */
+
+ function updateUser(array $data)
+ {
+     // DB接続
+     $mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
+     if($mysqli->connect_errno){
+         echo 'MySQLの接続に失敗しました : ' . $mysqli->connect_error . "\n";
+         exit;
+     }
+
+     // 更新日時を保存データに追加
+     $data['updated_at'] = date('Y-m-d H:i:s');
+
+     // パスワードがある場合->ハッシュタグ値に接続
+     if(isset($data['password'])){// データ配列にパスワードがあった場合
+         $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+     }
+
+     // ----------
+     // SQLクエリを作成(更新)
+     // ----------
+     // SET句のカラムを準備
+     
+     $set_columns = [];
+        foreach ([ // 更新するカラムをforeachで一つずつ取り出す
+            'name', 'nickname', 'email', 'password', 'image_name', 'updated_at'
+        ] as $column) {
+            // 入力があれば、更新の対象にする
+            if (isset($data[$column]) && $data[$column] !== '') {
+                $set_columns[] = $column . ' = "' . $mysqli->real_escape_string($data[$column]) . '"';
+            }
+        }
+
+     // クエリを組み立て
+     // UPDATE テーブル名 SET カラム名1でレコードの更新
+     $query = 'UPDATE users SET ' . join(',', $set_columns);
+     // 更新対象のユーザーidを条件に入れている
+     $query .= ' WHERE id = "' . $mysqli->real_escape_string($data['id']) . '"';
+
+     // ----------
+     // 戻り値を作成
+     // ----------
+     // クエリを実行
+     $response = $mysqli->query($query);
+
+     // SQLエラーの場合 -> エラー表示
+     if($response === false){
+         echo 'エラーメッセージ:' .$mysqli->error. "\n";
+     }
+
+     // ----------
+     // 後処理
+     // ----------
+     // DB接続を開放
+     $mysqli->close();
+
+     return $response;
+ }
+
+
+
+
+/**
  * ユーザー情報取得：ログインチェック
  * 
  * @param string $email
@@ -119,4 +187,80 @@ function findUserAndCheakPassword(string $email, string $password)
     $mysqli->close();
 
     return $user;
+}
+
+/**
+ * ユーザーを１件取得
+ * 
+ * @param int $user_id
+ * @param int $login_user_id
+ * @return array|false
+ */
+function findUser(int $user_id,int $login_user_id = null)
+{
+    //DB接続
+    $mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
+    if($mysqli->connect_errno){
+        echo 'MySQLの接続に失敗しました。: ' . $mysqli->connect_error . "\n";
+        exit;
+    }
+
+    //引数のエスケープ(SQLインジェクション対策)
+    $user_id = $mysqli->real_escape_string($user_id);
+    $login_user_id = $mysqli->real_escape_string($login_user_id);
+
+    // ----------
+    //SQLクエリを作成(検索)
+    // ----------
+    //ユーザー情報を取得するクエリ
+    $query = <<<SQL
+        SELECT 
+            -- 「select 列名」SELECT文で指定した列名のデータをFROM句で指定したテーブルから取得
+            U.id,
+            U.name,
+            U.nickname,
+            U.email,
+            U.image_name,
+            -- フォロー中の数(サブクエリの追加)
+            -- followsテーブルのレコード数(COUNT()を数える)
+            -- SELECT COUNT(*) FROM テーブル名;テーブルの件数を取得する。
+            -- WHERE句を使用して条件を指定することで，取得したいデータのみを取得することができます．
+            (SELECT COUNT(1) FROM follows WHERE status = 'active' AND follow_user_id = U.id) AS follow_user_count,
+            -- フォローワー中の数(サブクエリの追加)
+            -- followed_user_id = U.idが表示対象をフォローしているユーザーという意味
+            (SELECT COUNT(1) FROM follows WHERE status = 'active' AND followed_user_id = U.id) AS followed_user_count,
+            -- ログインユーザーがフォローしている場合、フォローIDが入る
+            F.id AS follow_id
+        FROM 
+            -- usersテーブルの別名をUにする
+            users AS U 
+            -- followsテーブルを紐づける。ONで結合の条件をつける。表示対象のユーザーを自分がフォローしているという条件。フォローしている場合に限り、セレクトにフォロ-idが入ってくる
+            LEFT JOIN 
+                follows AS F ON F.status = 'active' AND F.followed_user_id = '$user_id' AND F.follow_user_id = '$login_user_id'
+        WHERE 
+            -- active(既存会員)かつU.idが表示対象のuser_idで絞る            
+            U.status = 'active'AND U.id ='$user_id'
+    SQL;
+
+
+    // ----------
+    //戻り値を作成
+    // ----------
+    // クエリを実行し、SQLエラーでない場合
+    if($result = $mysqli->query($query)){//代入された値があれば
+        //戻り値の変数にセット：ユーザー情報１件
+        $response = $result->fetch_array(MYSQLI_ASSOC);
+    }else{
+        //戻り値用の変数にセット：失敗
+        $response = false;
+        echo 'エラーメッセージ:' . $mysqli->error . "\n";
+    }
+
+    // ----------
+    // 後処理
+    // ----------
+    // DB開放
+    $mysqli -> close();
+
+    return $response;
 }
