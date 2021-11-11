@@ -11,6 +11,9 @@ include_once '../config.php';
 include_once '../util.php';
 //フォローデータ操作モデルを読み込み
 include_once '../Models/follows.php';
+// 通知データ操作モデルを読み込み
+include_once '../Models/notifications.php';
+
 
 // ----------
 // ログインチェック
@@ -35,6 +38,14 @@ if (isset($_POST['followed_user_id'])){
     ];
     // フォロー登録 作成した新しいレコードのidがここに帰る
     $follow_id = createFollow($data);
+
+    // 通知を登録
+    $data_notification = [
+        'received_user_id' => $_POST['followed_user_id'],
+        'sent_user_id' => $user['id'],
+        'message' => 'フォローされました。',
+    ];
+    createNotification($data_notification);
 } 
 
 // ----------
@@ -55,7 +66,7 @@ if (isset($_POST['follow_id'])){
 // ----------
 // 返却したいデータを配列でまとめる
 $response = [
-    'messaga' => 'succesful',
+    'messaga' => 'successful',
     // フォローした時に入る。follow_idが存在していない場合エラーが表示されるので、//フォローする//の下部分で'null(初期化)'を設定する
     'follow_id' => $follow_id,
 ];

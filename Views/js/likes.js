@@ -70,7 +70,7 @@ $(function(){
             //いいね！ボタンの色を青色に変更
             $(this).find('img').attr('src','../Views/img/icon-heart-twitterblue.svg');
         })
-        .fail((data) => {
+            .fail((data) => {
             alert('処理中にエラーが発生しました。');
             console.log(data);
         });
