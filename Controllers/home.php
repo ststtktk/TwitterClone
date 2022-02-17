@@ -15,7 +15,7 @@ include_once '../Models/follows.php';
 //ログインしているか
 $user = getUserSession();
 if(!$user){//変数userに値がなければログインしていない事になる
-    //ログインしていない
+    //ログインしてない
     //header関数はブラウザに命令ができる。Locationという命令は、下記にかいたURLに遷移させるという内容
     header('Location:' . HOME_URL . 'Controllers/sign-in.php');
     exit;
