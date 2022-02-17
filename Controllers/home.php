@@ -17,7 +17,7 @@ $user = getUserSession();
 if(!$user){//変数userに値がなければログインしていない事になる
     //ログインしてない
     //header関数はブラウザに命令ができる。Locationという命令は、下記にかいたURLに遷移させるという内容
-    header('Location:' . HOME_URL . 'Controllers/sign-in.php');
+    header('Location:' . HOME_URL . 'Controllers/index.php');
     exit;
 }
 
