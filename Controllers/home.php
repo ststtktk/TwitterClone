@@ -1,6 +1,5 @@
 <?php
 ////ホームコントローラー////
-
 //設定を読み込み
 include_once '../config.php';
 //便利な関数を読み込み
@@ -25,7 +24,6 @@ if(!$user){//変数userに値がなければログインしていない事にな
 $following_user_ids = findFollowingUserIds($user['id']);
 // 自分のツイートも表示するために自分のIDも追加
 $following_user_ids[] = $user['id'];
-
 //表示用の変数
 $view_user = $user;
 //ツイート一覧。 モデルから取得

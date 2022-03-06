@@ -13,10 +13,6 @@
             <div class="main-header">
                 <h1>ホーム</h1>
             </div>
-            <!--
-                 # + id名 + Tabキー = <div id="first"></div>
-                 . + class名 + Tabキー = <div class="cls"></div>
-            -->
             <!-- つぶやき投稿エリア -->
             <div class="tweet-post">
                 <div class="my-icon">
@@ -39,7 +35,6 @@
 
             <!--仕切りエリア-->
             <div class="ditch"></div>
-
             <!--つぶやき一覧エリア-->
             <?php if(empty($view_tweets)): ?><!--エンプティー関数は第１引数の値が空だった場合　trueを返す-->
                 <p class="p-3">ツイートがありません</p><!--classのp-3はpaddingのことで、全方向に１レムの余白を開ける。bootstrapのクラす-->
