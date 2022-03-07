@@ -200,3 +200,138 @@ function findTweets(array $user,$keyword = null,array $user_ids = null )//キー
     return $response;
 }
 
+
+ /**
+  * リプライするツイートの取得
+  * 
+  */
+function replyTweet( )  
+{   
+    $mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
+    if($mysqli->connect_errno){
+        echo 'MySQLの接続に失敗しました。:' . $mysqli->connect_error ."\n";
+        exit;
+    }
+
+    $login_user_id = $mysqli->real_escape_string($user['id']);
+    $tweet_id = $_GET['tweet_id'];
+
+    $query = <<<SQL
+        SELECT 
+            T.id AS tweet_id,
+            T.status AS tweet_status,
+            T.body AS tweet_body,
+            T.image_name AS tweet_image_name,
+            T.created_at AS tweet_created_at,
+            U.id AS user_id,
+            U.name AS user_name,
+            U.nickname AS user_nickname,
+            U.image_name AS user_image_name,
+            L.id AS like_id,
+            (SELECT COUNT(*) FROM likes WHERE status = 'active' AND tweet_id = T.id) AS like_count
+        FROM
+            tweets AS T
+            JOIN
+            users AS U ON U.id = T.user_id AND U.status = 'active'
+            LEFT JOIN
+            likes AS L ON L.tweet_id = T.id AND L.status = 'active' AND L.user_id = '$login_user_id'
+        WHERE
+            T.status = 'active' AND T.id = $tweet_id
+    SQL;
+
+    if (isset($reply)) {
+        $reply = $mysqli->real_escape_string($reply);
+        $query .= ' AND CONCAT(U.nickname, U.name, T.body) LIKE "%' . $reply . '%"';
+    }
+
+    if (isset($user_ids)) {
+        foreach ($user_ids as $key => $user_id) {
+            $user_ids[$key] = $mysqli->real_escape_string($user_id);
+        }
+        $user_ids_csv = '"' . join('","', $user_ids) . '"';
+        $query .= ' AND T.user_id IN (' . $user_ids_csv . ')';
+    }
+    $query .= ' ORDER BY T.created_at DESC';
+    $query .= ' LIMIT 50';
+
+    $result = $mysqli->query($query);
+    if($result){
+        $response = $result->fetch_all(MYSQLI_ASSOC);
+    }else{
+        $response = false;
+        echo'エラーメッセージ:'.$mysqli->error ."\n";
+    }
+    $mysqli->close();
+
+    return $response;
+};
+
+
+/**
+ * リプライ作成
+ * 
+ */
+
+ function createReply(array $data)
+ {
+     $mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
+     if($mysqli->connect_errno){
+         echo 'MySQLの接続に失敗しました。:' . $mysqli->connect_error . "\n";
+         exit;
+     }
+ 
+     $query = 'INSERT INTO replys(user_id,tweet_id,reply_body) VALUES(?,?,?)';
+     $statement = $mysqli->prepare($query);
+     $statement->bind_param('iis',$data['user_id'],$data['tweet_id'],$data['reply_body']);
+ 
+     $response = $statement->execute();
+     if($response===false){
+         echo 'エラーメッセージ:'.$mysqli->error."\n";
+     }
+ 
+     $statement->close();
+     $mysqli->close();
+ 
+     return $response;
+ 
+ }
+
+/**
+ * リプライツイート
+ */
+function reply(){
+
+    $mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
+    if($mysqli->connect_errno){
+        echo 'MySQLの接続に失敗しました。:' . $mysqli->connect_error ."\n";
+        exit;
+    }
+    $login_user_id = $mysqli->real_escape_string($user['id']);
+    $tweet_id = $_GET['tweet_id'];
+
+    //replysデーブルのtweet_idとtweetsテーブルのidの一致とreplysテーブルのuser_idとusersテーブルのidが一致しているデータのみ統合
+    $query = 'SELECT replys.user_id,replys.tweet_id,replys.reply_body,users.nickname,users.image_name,replys.created_at
+              FROM replys 
+                JOIN tweets ON replys.tweet_id = tweets.id
+                LEFT JOIN users ON users.id = replys.user_id
+              WHERE tweets.id = ' . $tweet_id;
+    $query .= ' ORDER BY replys.created_at DESC';
+
+    // ----------
+    // 戻り値を作成
+    // ----------
+    if ($result = $mysqli->query($query)){ 
+        $response = $result->fetch_all(MYSQLI_ASSOC);
+    } else {
+        $response = false;
+        echo 'エラーメッセージ:' . $mysqli->error . "\n";
+    }
+
+    // ----------
+    // 後処理
+    // ---------
+    $mysqli->close();
+
+    return $response;
+
+}
