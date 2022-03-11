@@ -2,7 +2,8 @@
 ///////////////////////////////////////
 // デリートコントローラー
 ///////////////////////////////////////
- 
+
+
 // 設定を読み込み
 include_once '../config.php';
 // 便利な関数を読み込み
@@ -31,9 +32,8 @@ if (!$user) {
 // ----------
 // デリートする
 // ----------
-$id = $_post['tweet_id'];
+$id = $_POST['tweet_id'];
 deletetweet($id);
-
 
 // 検索キーワードを取得
 $keyword = null;
@@ -45,6 +45,6 @@ if(isset($_GET['keyword'])){
 $view_user = $user;
 $view_keyword = $keyword;
 //ツイート一覧。 モデルから取得
-$view_tweets =findTweets($user,$keyword);
+$view_tweets = findTweets($user,$keyword);
 
 include_once '../Views/manager_search.php';

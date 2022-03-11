@@ -34,9 +34,9 @@
             <div class="like">
                 <a href="manager_reply.php?tweet_id=<?php echo htmlspecialchars($view_tweet['tweet_id']); ?>" class=""><img src="<?php echo HOME_URL;?>Views/img/reply.png" alt="リプライ画像" class=""></a>
             </div>
-            <form action="delete.php" method="post" class="deletebtn">
+            <form action="delete.php" method="post" class="deletebtn" onsubmit="return confirm_test()">
                 <div class="delete-area">
-                    <input type="hidden" value="<?php echo htmlspecialchars($view_tweet['tweet_id']) ?>">
+                    <input type="hidden" value="<?php echo htmlspecialchars($view_tweet['tweet_id']) ?>" name="tweet_id">
                     <button type="submit" class="edit">削除</button>
                 </div>
             </form> 

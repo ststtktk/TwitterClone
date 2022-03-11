@@ -16,36 +16,14 @@
             <!-- つぶやき投稿エリア -->
             <div class="tweet-post">
                 <div class="my-icon">
-                    <!-- sessionから取得したユーザー情報にする-->
-                    <!-- $view_user = $user = getUserSession()はセッションのユーザー情報を取得する関数-->
                     <img src="<?php echo htmlspecialchars($view_user['image_path']) ?>" alt="">
                 </div>
                 <div class="input-area">
-                    <form action="post.php" method="post" enctype="multipart/form-data">
-                        <textarea name="body" placeholder="いまどうしてる？" maxlength="140"></textarea>
-                        <div class="bottom-area">
-                            <div class="mb-0">
-                                <input type="file" name="image" class="form-control form-control-sm">
-                            </div>
-                            <button class="btn" type="submit">つぶやく</button>
-                        </div>
-                    </form>
                 </div>
             </div>
 
             <!--仕切りエリア-->
             <div class="ditch"></div>
-            <!--つぶやき一覧エリア-->
-            <?php if(empty($view_tweets)): ?><!--エンプティー関数は第１引数の値が空だった場合　trueを返す-->
-                <p class="p-3">ツイートがありません</p><!--classのp-3はpaddingのことで、全方向に１レムの余白を開ける。bootstrapのクラす-->
-            <?php else: ?>
-                <div class="tweet-list">
-                <?php foreach($view_tweets as $view_tweet): ?>
-                    <!--foreach内でinclude_onceしたときは、tweet.phpが最初の1件分しか実行されないので、onceを外す-->
-                    <?php include('../Views/common/tweet.php');?>
-                <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
         </div>
     </div>
     <?php include_once('../Views/common/foot.php');?>
