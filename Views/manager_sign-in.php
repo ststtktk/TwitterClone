@@ -11,7 +11,6 @@
         <form action="manager_sign-in.php" method="post">
             <img src="<?php echo HOME_URL;?>Views/img/logo-white.svg" alt="" class="logo-white">
             <h1>管理者サイトにログイン</h1>
-
             <?php if (isset($view_try_login_result) && $view_try_login_result === false):?>
                 <div class="alert alert-warning text-sm" role="alert">
                     ログインに失敗しました。メールアドレス、パスワードが正しいかご確認ください。

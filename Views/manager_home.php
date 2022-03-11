@@ -8,7 +8,7 @@
 
 <body class="home">
     <div class="container"><!-- containerクラスは、レスポンシブウェブデザインが適用される -->
-        <?php include_once('../Views/common/side.php');?>
+        <?php include_once('../Views/common/manager_side.php');?>
         <div class="main">
             <div class="main-header">
                 <h1>管理者ホーム</h1>
