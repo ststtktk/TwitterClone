@@ -33,18 +33,8 @@ if (!$user) {
 // デリートする
 // ----------
 $id = $_POST['tweet_id'];
-deletetweet($id);
-
-// 検索キーワードを取得
-$keyword = null;
-if(isset($_GET['keyword'])){
-    $keyword = $_GET['keyword'];
+if(deletetweet($id)){
+    //ホーム画面に遷移
+    header('Location: '.HOME_URL.'Controllers/manager_search.php');
+    exit;
 }
-
-//表示用の変数
-$view_user = $user;
-$view_keyword = $keyword;
-//ツイート一覧。 モデルから取得
-$view_tweets = findTweets($user,$keyword);
-
-include_once '../Views/manager_search.php';
