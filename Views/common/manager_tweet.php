@@ -31,6 +31,7 @@
                 ?>
             </div>
             <div class="like-count js-like-count"><?php echo $view_tweet['like_count'];?></div>
+            <!--リプライ遷移-->
             <div class="like">
                 <a href="manager_reply.php?tweet_id=<?php echo htmlspecialchars($view_tweet['tweet_id']); ?>" class=""><img src="<?php echo HOME_URL;?>Views/img/reply.png" alt="リプライ画像" class=""></a>
             </div>
@@ -42,7 +43,4 @@
             </form> 
         </div>
     </div>
-</div>
-<div class="">
-
 </div>

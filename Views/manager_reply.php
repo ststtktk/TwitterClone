@@ -50,9 +50,10 @@
                                                 <textarea name="" id="" class=""><?php echo $reply['reply_body'] ?></textarea>
                                                 <button type="submit" class="edit" >編集</button>
                                             </form>
-                                            <form action="delete.php" method="post" class="deletebtn">
+                                            <form action="replydelete.php" method="post" class="deletebtn" onsubmit="return confirm_test()">
                                                 <div class="delete-area">
-                                                    <input type="hidden" value="<?php echo htmlspecialchars($view_tweet['tweet_id']) ?>">
+                                                    <input type="hidden" value="<?php echo htmlspecialchars($reply['id']) ?>" name="reply_id">
+                                                    <input type="hidden" value="<?php echo htmlspecialchars($reply['tweet_id']) ?>" name="tweet_id">
                                                     <button type="submit" class="edit">削除</button>
                                                 </div>
                                             </form> 
