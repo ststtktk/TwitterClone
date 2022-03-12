@@ -46,11 +46,12 @@
                                     </div>
                                     <div class="tweet">
                                         <div class="content">
-                                            <form action="" method="" class="editbtn">
-                                                <textarea name="" id="" class=""><?php echo $reply['reply_body'] ?></textarea>
+                                            <form action="reply_edit.php" method="post" class="editbtn" onsubmit="return confirm_edit()">
+                                                <input type="hidden" value="<?php echo htmlspecialchars($reply['id']) ?>" name="reply_id">
+                                                <textarea name="reply_body"><?php echo $reply['reply_body'] ?></textarea>
                                                 <button type="submit" class="edit" >編集</button>
                                             </form>
-                                            <form action="replydelete.php" method="post" class="deletebtn" onsubmit="return confirm_test()">
+                                            <form action="replydelete.php" method="post" class="deletebtn" onsubmit="return confirm_delete()">
                                                 <div class="delete-area">
                                                     <input type="hidden" value="<?php echo htmlspecialchars($reply['id']) ?>" name="reply_id">
                                                     <input type="hidden" value="<?php echo htmlspecialchars($reply['tweet_id']) ?>" name="tweet_id">

@@ -335,3 +335,63 @@ function reply(){
     return $response;
 
 }
+
+/**
+ * ツイート編集
+ */
+function edittweet($id,$body)
+{
+    $tweet_id = (int) htmlspecialchars($id,ENT_QUOTES);
+
+     //DB接続
+     $mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
+     if($mysqli->connect_errno){
+         echo 'MySQLの接続に失敗しました:'.$mysqli->connect_error."\n";
+     }
+
+    $query = 'UPDATE tweets SET body = ? WHERE id = ? ';
+    $statement = $mysqli->prepare($query);
+
+    $statement->bind_param('si',$body,$tweet_id);
+
+    $response = $statement->execute();
+
+    if($response===false){
+        echo 'エラーメッセージ:' .$mysqli->error . "\n";
+    }
+
+    $statement->close();
+    $mysqli->close();
+
+    return $response;
+}
+
+/**
+ * リプライ編集
+ */
+function editreply($id,$body)
+{
+    $reply_id = (int) htmlspecialchars($id,ENT_QUOTES);
+
+     //DB接続
+     $mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
+     if($mysqli->connect_errno){
+         echo 'MySQLの接続に失敗しました:'.$mysqli->connect_error."\n";
+     }
+
+    $query = 'UPDATE replys SET reply_body = ? WHERE id = ? ';
+    $statement = $mysqli->prepare($query);
+
+    $statement->bind_param('si',$body,$reply_id);
+
+    $response = $statement->execute();
+
+    if($response===false){
+        echo 'エラーメッセージ:' .$mysqli->error . "\n";
+    }
+
+    $statement->close();
+    $mysqli->close();
+
+    return $response;
+}

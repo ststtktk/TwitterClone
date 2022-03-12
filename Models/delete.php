@@ -21,7 +21,7 @@
      //SQLクエリを作成
      $query = "DELETE FROM tweets WHERE id = $message_id"; 
      $statement = $mysqli->prepare($query);
-     $statement->bind_param('i',$data);
+     $statement->bind_param('i',$message_id);
 
      // 戻り値を作成
      $response = $statement->execute();

@@ -11,8 +11,9 @@
                 <span class="user-name">@<?php echo htmlspecialchars($view_tweet['user_name']); ?> ・<?php echo convertToDayTimeAgo($view_tweet['tweet_created_at']); ?></span>
             </a>
         </div>
-        <form action="" class="editbtn">
-            <textarea name="" id="" class=""><?php echo $view_tweet['tweet_body']?></textarea>
+        <form action="tweet_edit.php" method="post" class="editbtn" onsubmit="return confirm_edit()">
+            <input type="hidden" value="<?php echo htmlspecialchars($view_tweet['tweet_id']) ?>" name="tweet_id">
+            <textarea name="tweet_body" class=""><?php echo $view_tweet['tweet_body']?></textarea>
             <?php if(isset($view_tweet['tweet_image_name'])): ?>
                 <img src="<?php echo buildImagePath($view_tweet['tweet_image_name'],'tweet'); ?>" alt="" class="post-image">
             <?php endif;?>
@@ -35,7 +36,7 @@
             <div class="like">
                 <a href="manager_reply.php?tweet_id=<?php echo htmlspecialchars($view_tweet['tweet_id']); ?>" class=""><img src="<?php echo HOME_URL;?>Views/img/reply.png" alt="リプライ画像" class=""></a>
             </div>
-            <form action="delete.php" method="post" class="deletebtn" onsubmit="return confirm_test()">
+            <form action="delete.php" method="post" class="deletebtn" onsubmit="return confirm_delete()">
                 <div class="delete-area">
                     <input type="hidden" value="<?php echo htmlspecialchars($view_tweet['tweet_id']) ?>" name="tweet_id">
                     <button type="submit" class="edit">削除</button>
