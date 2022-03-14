@@ -66,6 +66,7 @@
                                         <p><?php echo $reply['reply_body'] ?></p>
                                         <p class="tweetedit"><?php echo $reply['edit'] ?></p>
                                     <?php endif; ?>
+
                                 </div>
                             </div> 
                         <?php endforeach; ?>

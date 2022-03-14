@@ -10,7 +10,6 @@
                     <span class="nickname"><?php echo htmlspecialchars($view_tweet['user_nickname']); ?></span>
                     <span class="user-name">@<?php echo htmlspecialchars($view_tweet['user_name']); ?> ・<?php echo convertToDayTimeAgo($view_tweet['tweet_created_at']); ?></span>
                 </a>
-            </div>
         <!-- 削除された場合 -->
         <?php if(in_array('管理者により削除されました。',$view_tweet)):?>
             <p><?php echo $view_tweet['tweet_body'] ?></p>
