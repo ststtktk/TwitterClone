@@ -310,7 +310,7 @@ function reply(){
     $tweet_id = $_GET['tweet_id'];
 
     //replysデーブルのtweet_idとtweetsテーブルのidの一致とreplysテーブルのuser_idとusersテーブルのidが一致しているデータのみ統合
-    $query = 'SELECT replys.user_id,replys.tweet_id,replys.reply_body,users.nickname,users.image_name,replys.created_at
+    $query = 'SELECT replys.id,replys.user_id,replys.tweet_id,replys.reply_body,users.nickname,users.image_name,replys.created_at
               FROM replys 
                 JOIN tweets ON replys.tweet_id = tweets.id
                 LEFT JOIN users ON users.id = replys.user_id
@@ -334,4 +334,64 @@ function reply(){
 
     return $response;
 
+}
+
+/**
+ * ツイート編集
+ */
+function edittweet($id,$body)
+{
+    $tweet_id = (int) htmlspecialchars($id,ENT_QUOTES);
+
+     //DB接続
+     $mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
+     if($mysqli->connect_errno){
+         echo 'MySQLの接続に失敗しました:'.$mysqli->connect_error."\n";
+     }
+
+    $query = 'UPDATE tweets SET body = ? WHERE id = ? ';
+    $statement = $mysqli->prepare($query);
+
+    $statement->bind_param('si',$body,$tweet_id);
+
+    $response = $statement->execute();
+
+    if($response===false){
+        echo 'エラーメッセージ:' .$mysqli->error . "\n";
+    }
+
+    $statement->close();
+    $mysqli->close();
+
+    return $response;
+}
+
+/**
+ * リプライ編集
+ */
+function editreply($id,$body)
+{
+    $reply_id = (int) htmlspecialchars($id,ENT_QUOTES);
+
+     //DB接続
+     $mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
+     if($mysqli->connect_errno){
+         echo 'MySQLの接続に失敗しました:'.$mysqli->connect_error."\n";
+     }
+
+    $query = 'UPDATE replys SET reply_body = ? WHERE id = ? ';
+    $statement = $mysqli->prepare($query);
+
+    $statement->bind_param('si',$body,$reply_id);
+
+    $response = $statement->execute();
+
+    if($response===false){
+        echo 'エラーメッセージ:' .$mysqli->error . "\n";
+    }
+
+    $statement->close();
+    $mysqli->close();
+
+    return $response;
 }
