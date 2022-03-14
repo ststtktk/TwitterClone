@@ -33,11 +33,11 @@ if (!$user) {
 // リプライデリートする
 // ----------
 $id = $_POST['reply_id'];
-deletereply($id);
-
+$body = 'リプライがありません';
+$replydelete = '管理者により削除されました。';
 $tweetid = $_POST['tweet_id'];
 
-if(deletereply($id)){
+if(deletereply($id,$body,$replydelete)){
     //ホーム画面に遷移
     header('Location: '.HOME_URL.'Controllers/manager_reply.php?tweet_id='.$tweetid);
     exit;

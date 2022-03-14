@@ -93,7 +93,7 @@
                 <div class="tweet-list">
                     <?php foreach ($view_tweets as $view_tweet) : ?>
                     <!-- foreach内でinclude_onceしたときは、tweet.phpが最初の1件分しか実行されないので、onceを外す -->
-                        <?php include('../Views/common/tweet.php'); ?>
+                        <?php include('../Views/common/manager_tweet.php'); ?>
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>

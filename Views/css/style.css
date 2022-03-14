@@ -438,4 +438,12 @@ body.signup {
     text-align: end;
 }
 
- 
+.textedit{
+    text-align: left;
+    border: 1px solid rgb(235,238,240);
+}
+
+.tweetedit{
+    text-align: end;
+    color: #646464;
+}
