@@ -44,20 +44,27 @@
                                             <p><?php echo $reply['nickname'] ?>・<?php echo convertToDayTimeAgo($reply['created_at']) ?></p>
                                         </span>
                                     </div>
-                                    <form action="reply-edit.php" method="post" class="editbtn" onsubmit="return confirm_edit()">
-                                        <input type="hidden" value="<?php echo htmlspecialchars($reply['id']) ?>" name="reply_id">
-                                        <input type="hidden" value="<?php echo htmlspecialchars($reply['tweet_id']) ?>" name="tweet_id">
-                                        <textarea name="reply_body"><?php echo $reply['reply_body'] ?></textarea>
+                                    <!-- 削除された場合 -->
+                                    <?php if(in_array('管理者により削除されました。',$reply)):?>
+                                        <p><?php echo $reply['reply_body'] ?></p>
                                         <p class="tweetedit"><?php echo $reply['edit'] ?></p>
-                                        <button type="submit" class="edit" >編集</button>
-                                    </form>
-                                    <form action="reply-delete.php" method="post" class="deletebtn" onsubmit="return confirm_delete()">
-                                        <div class="delete-area">
+                                    <!-- 削除以外の場合 -->
+                                    <?php else: ?>                                    
+                                        <form action="reply-edit.php" method="post" class="editbtn" onsubmit="return confirm_edit()">
                                             <input type="hidden" value="<?php echo htmlspecialchars($reply['id']) ?>" name="reply_id">
                                             <input type="hidden" value="<?php echo htmlspecialchars($reply['tweet_id']) ?>" name="tweet_id">
-                                            <button type="submit" class="edit">削除</button>
-                                        </div>
-                                    </form> 
+                                            <textarea name="reply_body"><?php echo $reply['reply_body'] ?></textarea>
+                                            <p class="tweetedit"><?php echo $reply['edit'] ?></p>
+                                            <button type="submit" class="edit" >編集</button>
+                                        </form>
+                                        <form action="reply-delete.php" method="post" class="deletebtn" onsubmit="return confirm_delete()">
+                                            <div class="delete-area">
+                                                <input type="hidden" value="<?php echo htmlspecialchars($reply['id']) ?>" name="reply_id">
+                                                <input type="hidden" value="<?php echo htmlspecialchars($reply['tweet_id']) ?>" name="tweet_id">
+                                                <button type="submit" class="edit">削除</button>
+                                            </div>
+                                        </form> 
+                                    <?php endif; ?>
                                 </div>
                             </div> 
                         <?php endforeach; ?>

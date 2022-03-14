@@ -10,13 +10,19 @@
                     <span class="nickname"><?php echo htmlspecialchars($view_tweet['user_nickname']); ?></span>
                     <span class="user-name">@<?php echo htmlspecialchars($view_tweet['user_name']); ?> ・<?php echo convertToDayTimeAgo($view_tweet['tweet_created_at']); ?></span>
                 </a>
+        <!-- 削除された場合 -->
+        <?php if(in_array('管理者により削除されました。',$view_tweet)):?>
+            <p><?php echo $view_tweet['tweet_body'] ?></p>
+            <p class="tweetedit"><?php echo $view_tweet['tweet_edit'] ?></p>
+            <div class="icon-list">
             </div>
+        <!-- 削除以外の場合 -->
+        <?php else: ?>
             <p><?php echo $view_tweet['tweet_body']?></p>
             <p class="tweetedit"><?php echo $view_tweet['tweet_edit'] ?></p>
             <?php if(isset($view_tweet['tweet_image_name'])): ?>
                 <img src="<?php echo buildImagePath($view_tweet['tweet_image_name'],'tweet'); ?>" alt="" class="post-image">
             <?php endif;?>
-
             <div class="icon-list">
                 <div class="like js-like" data-tweet-id="<?php echo htmlspecialchars($view_tweet['tweet_id']); ?>" data-like-id="<?php echo htmlspecialchars($view_tweet['like_id']); ?>">
                     <?php
@@ -28,11 +34,12 @@
                         echo '<img src="'.HOME_URL.'Views/img/icon-heart.svg" alt="">';
                     }
                     ?>
+                </div>
+                <div class="like-count js-like-count"><?php echo $view_tweet['like_count'];?></div>
+                <div class="like">
+                    <a href="reply.php?tweet_id=<?php echo htmlspecialchars($view_tweet['tweet_id']); ?>" class=""><img src="<?php echo HOME_URL;?>Views/img/reply.png" alt="リプライ画像" class=""></a>
+                </div>
             </div>
-            <div class="like-count js-like-count"><?php echo $view_tweet['like_count'];?></div>
-            <div class="like">
-                <a href="reply.php?tweet_id=<?php echo htmlspecialchars($view_tweet['tweet_id']); ?>" class=""><img src="<?php echo HOME_URL;?>Views/img/reply.png" alt="リプライ画像" class=""></a>
-            </div>
-        </div>
+        <?php endif ?>
     </div>
 </div>

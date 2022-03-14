@@ -57,8 +57,16 @@
                                             <p><?php echo $reply['nickname'] ?>・<?php echo convertToDayTimeAgo($reply['created_at']) ?></p>
                                         </span>
                                     </div>
-                                    <p><?php echo $reply['reply_body'] ?></p>
-                                    <p class="tweetedit"><?php echo $reply['edit'] ?></p>
+                                    <!-- 削除された場合 -->
+                                    <?php if(in_array('管理者により削除されました。',$reply)):?>
+                                        <p><?php echo $reply['reply_body'] ?></p>
+                                        <p class="tweetedit"><?php echo $reply['edit'] ?></p>
+                                    <!-- 削除以外の場合 -->
+                                    <?php else: ?>                                    
+                                        <p><?php echo $reply['reply_body'] ?></p>
+                                        <p class="tweetedit"><?php echo $reply['edit'] ?></p>
+                                    <?php endif; ?>
+
                                 </div>
                             </div> 
                         <?php endforeach; ?>
