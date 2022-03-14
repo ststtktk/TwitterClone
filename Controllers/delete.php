@@ -33,7 +33,9 @@ if (!$user) {
 // デリートする
 // ----------
 $id = $_POST['tweet_id'];
-if(deletetweet($id)){
+$body = 'ツイートがありません';
+$tweetdelete = '管理者により削除されました。';
+if(deletetweet($id,$body,$tweetdelete)){
     //ホーム画面に遷移
     header('Location: '.HOME_URL.'Controllers/manager_search.php');
     exit;

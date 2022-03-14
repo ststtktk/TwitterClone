@@ -36,9 +36,10 @@ if (!$user) {
 // ----------
 $id = $_POST['reply_id'];
 $body = $_POST['reply_body'];
+$edit = '管理者により編集されました。';
 $tweetid = $_POST['tweet_id'];
 
-if(editreply($id,$body)){
+if(editreply($id,$body,$edit)){
     //ホーム画面に遷移
     header('Location: '.HOME_URL.'Controllers/manager_reply.php?tweet_id='.$tweetid);
     exit;

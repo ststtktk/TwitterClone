@@ -9,9 +9,9 @@
  * @param array $data
  */
 
- function deletetweet($data)
+ function deletetweet($id,$body,$tweetdelete)
  {
-    $message_id = (int) htmlspecialchars($data,ENT_QUOTES);
+    $tweet_id = (int) htmlspecialchars($id,ENT_QUOTES);
      
      //DB接続
      $mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
@@ -19,9 +19,10 @@
          echo 'MySQLの接続に失敗しました:'.$mysqli->connect_error."\n";
      }
      //SQLクエリを作成
-     $query = "DELETE FROM tweets WHERE id = $message_id"; 
+     //$query = "DELETE FROM tweets WHERE id = $tweet_id"; 
+     $query = 'UPDATE tweets SET body = ? , edit = ? WHERE id = ? ';
      $statement = $mysqli->prepare($query);
-     $statement->bind_param('i',$message_id);
+     $statement->bind_param('ssi',$body,$tweetdelete,$tweet_id);
 
      // 戻り値を作成
      $response = $statement->execute();
@@ -41,12 +42,12 @@
  /**
  * リプライデリート機能
  * 
- * @param array $data
+ * @param array $id
  */
 
-function deletereply($data)
+function deletereply($id,$body,$replydelete)
 {
-   $message_id = (int) htmlspecialchars($data,ENT_QUOTES);
+   $reply_id = (int) htmlspecialchars($id,ENT_QUOTES);
     
     //DB接続
     $mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
@@ -54,9 +55,9 @@ function deletereply($data)
         echo 'MySQLの接続に失敗しました:'.$mysqli->connect_error."\n";
     }
     //SQLクエリを作成
-    $query = "DELETE FROM replys WHERE id = $message_id"; 
+    $query = 'UPDATE replys SET reply_body = ? , edit = ? WHERE id = ? ';
     $statement = $mysqli->prepare($query);
-    $statement->bind_param('i',$data);
+    $statement->bind_param('ssi',$body,$replydelete,$reply_id);
 
     // 戻り値を作成
     $response = $statement->execute();

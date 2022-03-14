@@ -13,11 +13,14 @@
         </div>
         <form action="tweet_edit.php" method="post" class="editbtn" onsubmit="return confirm_edit()">
             <input type="hidden" value="<?php echo htmlspecialchars($view_tweet['tweet_id']) ?>" name="tweet_id">
-            <textarea name="tweet_body" class=""><?php echo $view_tweet['tweet_body']?></textarea>
+
+            <textarea name="tweet_body" class=""><?php echo $view_tweet['tweet_body'] ?></textarea>
+            <p class="tweetedit"><?php echo $view_tweet['tweet_edit'] ?></p>
+
             <?php if(isset($view_tweet['tweet_image_name'])): ?>
                 <img src="<?php echo buildImagePath($view_tweet['tweet_image_name'],'tweet'); ?>" alt="" class="post-image">
             <?php endif;?>
-            <button type="submit" class="edit" >編集</button>
+            <button type="submit" class="edit" name="edit_tweet">編集</button>
         </form>
         <div class="icon-list">
             <div class="like js-like" data-tweet-id="<?php echo htmlspecialchars($view_tweet['tweet_id']); ?>" data-like-id="<?php echo htmlspecialchars($view_tweet['like_id']); ?>">
@@ -39,7 +42,7 @@
             <form action="delete.php" method="post" class="deletebtn" onsubmit="return confirm_delete()">
                 <div class="delete-area">
                     <input type="hidden" value="<?php echo htmlspecialchars($view_tweet['tweet_id']) ?>" name="tweet_id">
-                    <button type="submit" class="edit">削除</button>
+                    <button type="submit" class="edit" name="delete_tweet">削除</button>
                 </div>
             </form> 
         </div>
