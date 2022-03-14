@@ -124,6 +124,7 @@ function findTweets(array $user,$keyword = null,array $user_ids = null )//キー
             T.id AS tweet_id,
             T.status AS tweet_status,
             T.body AS tweet_body,
+            T.edit AS tweet_edit,
             T.image_name AS tweet_image_name,
             T.created_at AS tweet_created_at,
             -- ツイートテーブルと紐づくユーザーの情報をセレクトに列挙する
@@ -266,7 +267,6 @@ function replyTweet( )
     return $response;
 };
 
-
 /**
  * リプライ作成
  * 
@@ -310,7 +310,7 @@ function reply(){
     $tweet_id = $_GET['tweet_id'];
 
     //replysデーブルのtweet_idとtweetsテーブルのidの一致とreplysテーブルのuser_idとusersテーブルのidが一致しているデータのみ統合
-    $query = 'SELECT replys.id,replys.user_id,replys.tweet_id,replys.reply_body,users.nickname,users.image_name,replys.created_at
+    $query = 'SELECT replys.id,replys.user_id,replys.tweet_id,replys.reply_body,users.nickname,users.image_name,replys.created_at,replys.edit
               FROM replys 
                 JOIN tweets ON replys.tweet_id = tweets.id
                 LEFT JOIN users ON users.id = replys.user_id
@@ -339,7 +339,7 @@ function reply(){
 /**
  * ツイート編集
  */
-function edittweet($id,$body)
+function edittweet($id,$body,$edit)
 {
     $tweet_id = (int) htmlspecialchars($id,ENT_QUOTES);
 
@@ -349,10 +349,10 @@ function edittweet($id,$body)
          echo 'MySQLの接続に失敗しました:'.$mysqli->connect_error."\n";
      }
 
-    $query = 'UPDATE tweets SET body = ? WHERE id = ? ';
+    $query = 'UPDATE tweets SET body = ? , edit = ? WHERE id = ? ';
     $statement = $mysqli->prepare($query);
 
-    $statement->bind_param('si',$body,$tweet_id);
+    $statement->bind_param('ssi',$body,$edit,$tweet_id);
 
     $response = $statement->execute();
 
@@ -369,7 +369,7 @@ function edittweet($id,$body)
 /**
  * リプライ編集
  */
-function editreply($id,$body)
+function editreply($id,$body,$edit)
 {
     $reply_id = (int) htmlspecialchars($id,ENT_QUOTES);
 
@@ -379,10 +379,10 @@ function editreply($id,$body)
          echo 'MySQLの接続に失敗しました:'.$mysqli->connect_error."\n";
      }
 
-    $query = 'UPDATE replys SET reply_body = ? WHERE id = ? ';
+    $query = 'UPDATE replys SET reply_body = ? ,edit = ? WHERE id = ? ';
     $statement = $mysqli->prepare($query);
 
-    $statement->bind_param('si',$body,$reply_id);
+    $statement->bind_param('ssi',$body,$edit,$reply_id);
 
     $response = $statement->execute();
 

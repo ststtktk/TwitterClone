@@ -19,7 +19,7 @@ ini_set('display_errors',1);
             </div>
 
             <!--検索エリア-->
-            <form action="search.php" method="get">
+            <form action="manager_search.php" method="get">
                 <div class="search-area">
                     <input type="text" class="form-control" placeholder="キーワード検索" name="keyword" value="<?php echo htmlspecialchars($view_keyword);?>">
                     <button type="submit" class="btn">検索</button>

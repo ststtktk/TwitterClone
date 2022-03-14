@@ -34,8 +34,9 @@ if (!$user) {
 // ----------
 $id = $_POST['tweet_id'];
 $body = $_POST['tweet_body'];
+$edit = '管理者により編集されました。';
 
-if(edittweet($id,$body)){
+if(edittweet($id,$body,$edit)){
     //ホーム画面に遷移
     header('Location: '.HOME_URL.'Controllers/manager_search.php');
     exit;

@@ -57,11 +57,8 @@
                                             <p><?php echo $reply['nickname'] ?>・<?php echo convertToDayTimeAgo($reply['created_at']) ?></p>
                                         </span>
                                     </div>
-                                    <div class="tweet">
-                                        <div class="content">
-                                            <p><?php echo $reply['reply_body'] ?></p>
-                                        </div>
-                                    </div>
+                                    <p><?php echo $reply['reply_body'] ?></p>
+                                    <p class="tweetedit"><?php echo $reply['edit'] ?></p>
                                 </div>
                             </div> 
                         <?php endforeach; ?>
@@ -71,8 +68,6 @@
 
         </div>
     </div>
-
-
     <?php include_once('../Views/common/foot.php');?>
     
 </body>
