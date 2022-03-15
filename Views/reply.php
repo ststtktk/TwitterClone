@@ -5,9 +5,8 @@
     <title>リプライ画面 / Twitterクローン</title>
     <meta name="description" content="リプライ画面です">
 </head>
-
 <body class="home">
-    <div class="container"><!-- containerクラスは、レスポンシブウェブデザインが適用される -->
+    <div class="container">
         <?php include_once('../Views/common/side.php');?>
         <div class="main">
             <div class="main-header">
@@ -23,10 +22,8 @@
                     </div>
                 </div>
             </div>
-
             <!--仕切りエリア-->
             <div class="ditch"></div>
-
             <!--リプライ投稿エリア-->
             <div class="tweet-post">
                 <div class="input-area">
@@ -39,7 +36,6 @@
                     </form>
                 </div>
             </div>
-
             <!--リプライ一覧エリア-->
             <div class="tweet-post">
                 <div class="input-area">
@@ -66,7 +62,6 @@
                                         <p><?php echo $reply['reply_body'] ?></p>
                                         <p class="tweetedit"><?php echo $reply['edit'] ?></p>
                                     <?php endif; ?>
-
                                 </div>
                             </div> 
                         <?php endforeach; ?>
@@ -77,6 +72,5 @@
         </div>
     </div>
     <?php include_once('../Views/common/foot.php');?>
-    
 </body>
 </html>

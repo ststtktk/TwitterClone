@@ -1,9 +1,7 @@
 <?php 
-
 // ----------
 // フォローコントローラー
 // ---------
-
 
 //設定を読み込み
 include_once '../config.php';
@@ -13,7 +11,6 @@ include_once '../util.php';
 include_once '../Models/follows.php';
 // 通知データ操作モデルを読み込み
 include_once '../Models/notifications.php';
-
 
 // ----------
 // ログインチェック

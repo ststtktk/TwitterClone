@@ -283,7 +283,7 @@ function replyTweet( )
      $query = 'INSERT INTO replys(user_id,tweet_id,reply_body) VALUES(?,?,?)';
      $statement = $mysqli->prepare($query);
      $statement->bind_param('iis',$data['user_id'],$data['tweet_id'],$data['reply_body']);
- 
+
      $response = $statement->execute();
      if($response===false){
          echo 'エラーメッセージ:'.$mysqli->error."\n";
@@ -308,7 +308,6 @@ function reply(){
     }
     $login_user_id = $mysqli->real_escape_string($user['id']);
     $tweet_id = $_GET['tweet_id'];
-
     //replysデーブルのtweet_idとtweetsテーブルのidの一致とreplysテーブルのuser_idとusersテーブルのidが一致しているデータのみ統合
     $query = 'SELECT replys.id,replys.user_id,replys.tweet_id,replys.reply_body,users.nickname,users.image_name,replys.created_at,replys.edit
               FROM replys 
@@ -316,7 +315,6 @@ function reply(){
                 LEFT JOIN users ON users.id = replys.user_id
               WHERE tweets.id = ' . $tweet_id;
     $query .= ' ORDER BY replys.created_at DESC';
-
     // ----------
     // 戻り値を作成
     // ----------
@@ -351,11 +349,9 @@ function edittweet($id,$body,$edit)
 
     $query = 'UPDATE tweets SET body = ? , edit = ? WHERE id = ? ';
     $statement = $mysqli->prepare($query);
-
     $statement->bind_param('ssi',$body,$edit,$tweet_id);
 
     $response = $statement->execute();
-
     if($response===false){
         echo 'エラーメッセージ:' .$mysqli->error . "\n";
     }
@@ -381,11 +377,9 @@ function editreply($id,$body,$edit)
 
     $query = 'UPDATE replys SET reply_body = ? ,edit = ? WHERE id = ? ';
     $statement = $mysqli->prepare($query);
-
     $statement->bind_param('ssi',$body,$edit,$reply_id);
 
     $response = $statement->execute();
-
     if($response===false){
         echo 'エラーメッセージ:' .$mysqli->error . "\n";
     }
