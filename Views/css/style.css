@@ -412,4 +412,38 @@ body.signup {
     margin-bottom: 8px;
 }
 
- 
+.tweet .content .managerbtn{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.tweet .content .editbtn textarea{
+    width: 100%;
+    border: 1px solid #d9dae1;
+}
+
+.tweet .content .editbtn{
+    text-align: end;
+    margin-bottom: 5px;
+}
+
+.tweet .content .edit{
+    color: #ffffff;
+    background-color: #e32626;
+    border: 0px;
+}
+
+.tweet .content .deletebtn {
+    width: 100%;
+    text-align: end;
+}
+
+.textedit{
+    text-align: left;
+    border: 1px solid rgb(235,238,240);
+}
+
+.tweetedit{
+    text-align: end;
+    color: #646464;
+}

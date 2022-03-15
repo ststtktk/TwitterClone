@@ -261,3 +261,50 @@ function findUser(int $user_id,int $login_user_id = null)
 
     return $response;
 }
+
+/**
+ * 管理者情報取得：ログインチェック
+ * 
+ * @param string $email
+ * @param string $password
+ * @return array|false
+ */
+function findManagerAndCheakPassword(string $email, string $password)
+{
+    //DB接続
+    $mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
+
+    //接続エラーがある場合->処理停止
+    if($mysqli->connect_errno){
+        echo 'MySQLの接続に失敗しました。:' . $mysqli->connect_error . "\n";
+        exit;
+    }
+
+    $email = $mysqli->real_escape_string($email);
+    $query = 'SELECT * FROM users WHERE manager = "active" AND email = "' . $email . '"' ;
+    $result = $mysqli->query($query);
+
+    if(!$result){
+        echo 'エラーメッセージ:' . $mysqli->error . "\n";
+        $mysqli->close();
+        return false;
+    }
+
+    //ユーザー情報を取得
+    $user = $result->fetch_array(MYSQLI_ASSOC);
+    //ユーザーが存在しない場合 ->return
+    if(!$user){
+        $mysqli->close();
+        return false;
+    }
+
+    //パスワードチェック、不一致の場合->return
+    if(!password_verify($password,$user['password'])){
+        $mysqli->close();
+        return false;
+    }
+
+    $mysqli->close();
+
+    return $user;
+}
