@@ -34,6 +34,7 @@ if (isset($_POST['body'])){
         'image_name' => $image_name,
     ];
 
+    
     //つぶやき投稿
     if(createTweet($data)){
         //ホーム画面に遷移
